@@ -22,6 +22,7 @@ const RawDataTable: React.FC<RawDataTableProps> = ({ bills, readings }) => {
     ? Object.entries(readings.data[0].attributes.readings.kw).slice(0, 10)
     : [];
 
+  //this ideally have no inline styles, have it in a table style file, probably
   return (
     <div className="card col-span-12">
       <div
@@ -51,7 +52,7 @@ const RawDataTable: React.FC<RawDataTableProps> = ({ bills, readings }) => {
               </tr>
             </thead>
             <tbody>
-              {recentBills.map((bill: any, idx: number) => (
+              {recentBills.map((bill, idx) => (
                 <tr key={idx}>
                   <td style={{ border: "1px solid #ddd", padding: "8px" }}>
                     {new Date(bill.attributes.start).toLocaleDateString()}
