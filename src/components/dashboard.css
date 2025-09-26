@@ -1,0 +1,49 @@
+/* Grid container */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+
+/* Boxes / Cards */
+.card {
+  background: white;
+  border-radius: 1rem;
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .card-content {
+    p {
+      margin: 0;
+      margin-block-start: 0;
+    }
+    .red {
+      color: red;
+    }
+    .green {
+      color: green;
+    }
+  }
+}
+
+/* Responsive column spans */
+.col-span-12 {
+  grid-column: span 12;
+}
+.col-span-8 {
+  grid-column: span 8;
+}
+.col-span-6 {
+  grid-column: span 6;
+}
+.col-span-4 {
+  grid-column: span 4;
+}
+
+/* Optional: make responsive */
+@media (max-width: 768px) {
+  .col-span-6,
+  .col-span-4 {
+    grid-column: span 12;
+  }
+}
