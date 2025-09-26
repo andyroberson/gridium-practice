@@ -13,7 +13,7 @@ interface Bill {
   type: string;
 }
 
-interface BillsData {
+export interface BillsData {
   data: Bill[];
 }
 
@@ -29,7 +29,7 @@ interface MonthlyData {
   usage: number;
   peakDemand: number;
 }
-interface ReadingsData {
+export interface ReadingsData {
   data: Array<{
     attributes: {
       readings: {
@@ -43,6 +43,19 @@ interface HourlyUsageData {
   hour: string;
   avgKw: number;
   count: number;
+}
+
+interface PeakDemandData {
+  month: string;
+  peakDemand: number;
+  cost: number;
+}
+
+interface PeakInterval {
+  timestamp: string;
+  value: number;
+  formattedTime: string;
+  date: string;
 }
 
 /**
@@ -173,4 +186,76 @@ export const getHourlyUsagePattern = (
       : 0,
     count: hourlyData[hour]?.count || 0,
   }));
+};
+
+/**
+ * Extracts monthly peak demand values for trend analysis
+ *
+ * @param billsData - Raw billing data from API
+ * @returns Array of monthly peak demand values with associated costs
+ *
+ * Example output:
+ * [
+ *   { month: "Sep 2023", peakDemand: 55.2, cost: 3699.85 },
+ *   { month: "Oct 2023", peakDemand: 48.7, cost: 3204.12 },
+ *   { month: "Nov 2023", peakDemand: 62.1, cost: 3850.44 }
+ * ]
+ */
+export const getPeakDemandTrends = (
+  billsData: BillsData | null
+): PeakDemandData[] => {
+  if (!billsData?.data?.length) return [];
+
+  return billsData.data
+    .sort(
+      (a, b) =>
+        new Date(a.attributes.start).getTime() -
+        new Date(b.attributes.start).getTime()
+    )
+    .map((bill) => ({
+      month: new Date(bill.attributes.start).toLocaleDateString("en-US", {
+        month: "short",
+        year: "numeric",
+      }),
+      peakDemand: bill.attributes.peakDemand,
+      cost: bill.attributes.cost,
+    }));
+};
+
+/**
+ * Finds the highest individual 15-minute demand intervals from meter readings
+ *
+ * @param readingsData - Raw meter readings from API
+ * @returns Top 10 highest 15-minute intervals with timestamps
+ *
+ * Example output:
+ * [
+ *   { timestamp: "2023-09-01T13:30:00-07:00", value: 36.0, formattedTime: "1:30 PM", date: "9/1/2023" },
+ *   { timestamp: "2023-09-01T14:00:00-07:00", value: 33.6, formattedTime: "2:00 PM", date: "9/1/2023" },
+ *   { timestamp: "2023-09-01T14:15:00-07:00", value: 32.4, formattedTime: "2:15 PM", date: "9/1/2023" }
+ * ]
+ */
+export const getTopPeakIntervals = (
+  readingsData: ReadingsData | null
+): PeakInterval[] => {
+  if (!readingsData?.data?.[0]?.attributes?.readings?.kw) return [];
+
+  const kwReadings = readingsData.data[0].attributes.readings.kw;
+
+  return Object.entries(kwReadings)
+    .map(([timestamp, value]) => {
+      const date = new Date(timestamp);
+      return {
+        timestamp,
+        value,
+        formattedTime: date.toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        }),
+        date: date.toLocaleDateString(),
+      };
+    })
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 10); // Top 10 peaks
 };
