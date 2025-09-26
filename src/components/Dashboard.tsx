@@ -11,6 +11,7 @@ import {
 
 import { useEnergyData } from "../hooks/useEnergyData.ts";
 import {
+  getHourlyUsagePattern,
   getLatestBillMetrics,
   getMonthlyBillData,
 } from "../utils/dataProcessors.ts";
@@ -25,6 +26,7 @@ const Dashboard = () => {
 
   const billMetrics = getLatestBillMetrics(bills);
   const monthlyData = getMonthlyBillData(bills);
+  const hourlyData = getHourlyUsagePattern(readings);
 
   console.log(billMetrics);
 
@@ -91,15 +93,36 @@ const Dashboard = () => {
       {/* Row 2 */}
       <div className="card col-span-6">
         <h2>Daily Usage Pattern</h2>
-        <div
-          style={{
-            height: "200px",
-            textAlign: "center",
-            lineHeight: "200px",
-            color: "#aaa",
-          }}
-        >
-          Line Chart Placeholder
+        <div style={{ height: "250px" }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={hourlyData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="hour"
+                tick={{ fontSize: 10 }}
+                interval={2} // Show every 3rd hour to avoid crowding
+              />
+              <YAxis
+                tick={{ fontSize: 12 }}
+                tickFormatter={(value) => `${value.toFixed(1)} kW`}
+              />
+              <Tooltip
+                formatter={(value: number, name: string) => [
+                  `${value.toFixed(2)} kW`,
+                  "Avg Usage",
+                ]}
+                labelFormatter={(label) => `Time: ${label}`}
+              />
+              <Line
+                type="monotone"
+                dataKey="avgKw"
+                stroke="#10B981"
+                strokeWidth={2}
+                dot={{ fill: "#10B981", strokeWidth: 1, r: 2 }}
+                activeDot={{ r: 4 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
