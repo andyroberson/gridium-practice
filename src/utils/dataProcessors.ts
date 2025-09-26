@@ -23,12 +23,6 @@ interface BillMetrics {
   billingPeriod: string;
 }
 
-interface MonthlyData {
-  month: string;
-  cost: number;
-  usage: number;
-  peakDemand: number;
-}
 export interface ReadingsData {
   data: Array<{
     attributes: {
@@ -92,40 +86,6 @@ export const getLatestBillMetrics = (
       latest.attributes.end
     ).toLocaleDateString()}`,
   };
-};
-
-/**
- * Transforms billing data into a format suitable for time-series charts
- *
- * @param billsData - Raw billing data from API
- * @returns Array of monthly data points sorted chronologically
- *
- * Example output:
- * [
- *   { month: "Sep 2023", cost: 3699.85, usage: 8576.55, peakDemand: 55.2 },
- *   { month: "Oct 2023", cost: 3204.12, usage: 7890.23, peakDemand: 48.7 },
- * ]
- */
-export const getMonthlyBillData = (
-  billsData: BillsData | null
-): MonthlyData[] => {
-  if (!billsData?.data?.length) return [];
-
-  return billsData.data
-    .sort(
-      (a, b) =>
-        new Date(a.attributes.start).getTime() -
-        new Date(b.attributes.start).getTime()
-    )
-    .map((bill) => ({
-      month: new Date(bill.attributes.start).toLocaleDateString("en-US", {
-        month: "short",
-        year: "numeric",
-      }),
-      cost: bill.attributes.cost,
-      usage: bill.attributes.use,
-      peakDemand: bill.attributes.peakDemand,
-    }));
 };
 
 /**

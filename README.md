@@ -29,15 +29,15 @@ npm run dev
 
 - Tests - Add unit tests, esp for data processor / component rendering
 - Componentization - Break dashboard sections into smaller reusable components.
+- Add a real loading animation rather than just text.
 - Styling:
   - Improve overall styling
   - Cnetralized variables / overall style defined (color variables, fonts, spacing, etc)
-- Update monthly costs section:
-  - Add a year dropdown, defualt to current year, rather than showing all the data
 - Update raw table:
   - this would be better if we had a table component, and the table had pagination / sorting. Would also consider having a tab view for this, especially for mobile
 - Refactoring
 
+  - Remove inline styles: separate style files
   - Move type definitions into its own file
   - Long term, i'd probably prefer D3 to Recharts, especially for lots of flexibility / greater styling
 

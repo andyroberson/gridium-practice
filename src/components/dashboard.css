@@ -8,25 +8,32 @@
 }
 
 /* Boxes / Cards */
+.key-metrics {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .card-content {
+    margin-bottom: 24px;
+    div {
+      margin-bottom: 16px;
+    }
+  }
+}
 .card {
   background: white;
   border-radius: 1rem;
   padding: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
+  .card {
+    box-shadow: unset; /* no boxshadow for a card within a card */
+  }
+
   h2 {
     margin-top: 4px;
     margin-bottom: 4px;
+    text-align: center;
   }
-
-  .key-metrics {
-    .card-content {
-      div {
-        margin-bottom: 16px;
-      }
-    }
-  }
-
   .card-content {
     p {
       margin: 0;

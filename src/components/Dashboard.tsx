@@ -15,10 +15,10 @@ import { useEnergyData } from "../hooks/useEnergyData.ts";
 import {
   getHourlyUsagePattern,
   getLatestBillMetrics,
-  getMonthlyBillData,
   getPeakDemandTrends,
 } from "../utils/dataProcessors.ts";
 import RawDataTable from "./RawTable.tsx";
+import MonthlyCosts from "./MonthlyCosts.tsx";
 
 const Dashboard = () => {
   const { readings, bills, loading, error } = useEnergyData();
@@ -27,7 +27,6 @@ const Dashboard = () => {
   if (error) return <div>Error: {error}</div>;
 
   const billMetrics = getLatestBillMetrics(bills);
-  const monthlyData = getMonthlyBillData(bills);
   const hourlyData = getHourlyUsagePattern(readings);
   const peakTrends = getPeakDemandTrends(bills);
 
@@ -69,45 +68,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="card col-span-8">
-        <h2>Monthly Costs</h2>
-        <div
-          style={{
-            color: "#aaa",
-            height: "250px",
-          }}
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="month"
-                tick={{ fontSize: 12 }}
-                angle={-45}
-                textAnchor="end"
-                height={80}
-              />
-              <YAxis
-                tick={{ fontSize: 12 }}
-                tickFormatter={(value) => `$${value.toLocaleString()}`}
-              />
-              <Tooltip
-                formatter={(value: number) => [
-                  `$${value.toLocaleString()}`,
-                  "Cost",
-                ]}
-                labelStyle={{ color: "#374151" }}
-              />
-              <Line
-                type="monotone"
-                dataKey="cost"
-                stroke="#3B82F6"
-                strokeWidth={3}
-                dot={{ fill: "#3B82F6", strokeWidth: 2, r: 4 }}
-                activeDot={{ r: 6 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        <MonthlyCosts bills={bills} />
       </div>
 
       {/* Row 2 */}
