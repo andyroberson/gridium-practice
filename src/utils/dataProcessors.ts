@@ -50,14 +50,6 @@ interface PeakDemandData {
   peakDemand: number;
   cost: number;
 }
-
-interface PeakInterval {
-  timestamp: string;
-  value: number;
-  formattedTime: string;
-  date: string;
-}
-
 /**
  * Processes billing data to extract key metrics for the latest bill
  *
@@ -221,5 +213,3 @@ export const getPeakDemandTrends = (
       cost: bill.attributes.cost,
     }));
 };
-
-//top peak intervals

@@ -1,73 +1,45 @@
-# React + TypeScript + Vite
+# Gridium Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A quick prototype dashboard built with **Recharts** to visualize energy data using React / TS.
+It highlights what I thought would be most valuable for a user:
 
-Currently, two official plugins are available:
+- Latest cost
+- Overall summary
+- Usage patterns
+- Data preview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Installation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# Clone the repository
+git clone https://github.com/andyroberson/gridium-practice
 
-## Expanding the ESLint configuration
+# Install dependencies
+npm install
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Start the dev server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Notes / Next steps
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Tests - Add unit tests, esp for data processor / component rendering
+- Componentization - Break dashboard sections into smaller reusable components.
+- Styling:
+  - Improve overall styling
+  - Cnetralized variables / overall style defined (color variables, fonts, spacing, etc)
+- Update monthly costs section:
+  - Add a year dropdown, defualt to current year, rather than showing all the data
+- Update raw table:
+  - this would be better if we had a table component, and the table had pagination / sorting. Would also consider having a tab view for this, especially for mobile
+- Refactoring
+
+  - Move type definitions into its own file
+  - Long term, i'd probably prefer D3 to Recharts, especially for lots of flexibility / greater styling
+
+- Asking questions
+  - In a normal situation, I'd also ask a few questions about this like: what do we want users to focus on most? I did an overall summary that uses both endpoints, but if there were different goals, maybe we could've made this with tabs so users are seeing one billing and one readings and endpoints are loaded / memoized through tab clicks.
