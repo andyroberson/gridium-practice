@@ -3,6 +3,8 @@
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 20px;
+  background-color: #eee;
+  padding: 16px;
 }
 
 /* Boxes / Cards */
@@ -12,16 +14,55 @@
   padding: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
+  h2 {
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+
+  .key-metrics {
+    .card-content {
+      div {
+        margin-bottom: 16px;
+      }
+    }
+  }
+
   .card-content {
     p {
       margin: 0;
       margin-block-start: 0;
+    }
+    .label {
+      font-size: 12px;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+      margin-bottom: 4px;
     }
     .red {
       color: red;
     }
     .green {
       color: green;
+    }
+  }
+
+  .cost {
+    display: flex;
+    flex-direction: column;
+
+    .num {
+      font-size: 2em;
+      font-weight: bold;
+      color: black;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .cost-change {
+      font-size: 14px;
+      font-weight: 500;
     }
   }
 }
@@ -40,10 +81,10 @@
   grid-column: span 4;
 }
 
-/* Optional: make responsive */
 @media (max-width: 768px) {
   .col-span-6,
-  .col-span-4 {
+  .col-span-4,
+  .col-span-8 {
     grid-column: span 12;
   }
 }

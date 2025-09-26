@@ -222,40 +222,4 @@ export const getPeakDemandTrends = (
     }));
 };
 
-/**
- * Finds the highest individual 15-minute demand intervals from meter readings
- *
- * @param readingsData - Raw meter readings from API
- * @returns Top 10 highest 15-minute intervals with timestamps
- *
- * Example output:
- * [
- *   { timestamp: "2023-09-01T13:30:00-07:00", value: 36.0, formattedTime: "1:30 PM", date: "9/1/2023" },
- *   { timestamp: "2023-09-01T14:00:00-07:00", value: 33.6, formattedTime: "2:00 PM", date: "9/1/2023" },
- *   { timestamp: "2023-09-01T14:15:00-07:00", value: 32.4, formattedTime: "2:15 PM", date: "9/1/2023" }
- * ]
- */
-export const getTopPeakIntervals = (
-  readingsData: ReadingsData | null
-): PeakInterval[] => {
-  if (!readingsData?.data?.[0]?.attributes?.readings?.kw) return [];
-
-  const kwReadings = readingsData.data[0].attributes.readings.kw;
-
-  return Object.entries(kwReadings)
-    .map(([timestamp, value]) => {
-      const date = new Date(timestamp);
-      return {
-        timestamp,
-        value,
-        formattedTime: date.toLocaleTimeString("en-US", {
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true,
-        }),
-        date: date.toLocaleDateString(),
-      };
-    })
-    .sort((a, b) => b.value - a.value)
-    .slice(0, 10); // Top 10 peaks
-};
+//top peak intervals

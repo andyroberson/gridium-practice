@@ -17,7 +17,6 @@ import {
   getLatestBillMetrics,
   getMonthlyBillData,
   getPeakDemandTrends,
-  getTopPeakIntervals,
 } from "../utils/dataProcessors.ts";
 import RawDataTable from "./RawTable.tsx";
 
@@ -33,7 +32,6 @@ const Dashboard = () => {
   const monthlyData = getMonthlyBillData(bills);
   const hourlyData = getHourlyUsagePattern(readings);
   const peakTrends = getPeakDemandTrends(bills);
-  // const topIntervals = getTopPeakIntervals(readings);
 
   console.log(billMetrics);
 
@@ -41,16 +39,33 @@ const Dashboard = () => {
     <div className="dashboard-grid">
       {/* Row 1 */}
 
-      <div className="card col-span-4">
+      <div className="card col-span-4 key-metrics">
         <h2>Key Metrics</h2>
         <div className="card-content">
           {billMetrics && (
             <>
-              <p>Current cost: ${billMetrics.currentCost.toLocaleString()}</p>
-              <p className={`${billMetrics.costChange >= 0 ? "red" : "green"}`}>
-                {billMetrics.costChange > 0 ? "+" : ""}
-                {billMetrics.costChange.toFixed(1)}% from last month
-              </p>
+              <div style={{ marginBottom: "16px" }}>
+                <p className="label">Latest Billing Period</p>
+                <p style={{ fontSize: "14px", color: "#6B7280" }}>
+                  {billMetrics.billingPeriod}
+                </p>
+              </div>
+
+              <div className="cost">
+                <p className="label">Total Cost</p>
+                <p className="num">
+                  ${billMetrics.currentCost.toLocaleString()}
+                </p>
+                <p
+                  className="cost-change"
+                  style={{
+                    color: billMetrics.costChange >= 0 ? "#EF4444" : "#10B981",
+                  }}
+                >
+                  {billMetrics.costChange > 0 ? "+" : ""}
+                  {billMetrics.costChange.toFixed(1)}% from last month
+                </p>
+              </div>
             </>
           )}
         </div>
@@ -60,7 +75,7 @@ const Dashboard = () => {
         <div
           style={{
             color: "#aaa",
-            height: "150px",
+            height: "250px",
           }}
         >
           <ResponsiveContainer width="100%" height="100%">
