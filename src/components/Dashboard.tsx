@@ -23,8 +23,6 @@ import RawDataTable from "./RawTable.tsx";
 const Dashboard = () => {
   const { readings, bills, loading, error } = useEnergyData();
 
-  console.log(readings, bills);
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -129,7 +127,7 @@ const Dashboard = () => {
                 tickFormatter={(value) => `${value.toFixed(1)} kW`}
               />
               <Tooltip
-                formatter={(value: number, name: string) => [
+                formatter={(value: number) => [
                   `${value.toFixed(2)} kW`,
                   "Avg Usage",
                 ]}
